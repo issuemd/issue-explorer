@@ -1,0 +1,9 @@
+#!/usr/bin/env node
+
+const mri = require('mri')
+
+const issue = require('../src')
+
+const args = mri(process.argv.slice(2))
+
+issue(args)

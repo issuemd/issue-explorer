@@ -1,7 +1,7 @@
-const { appendFileSync, readFileSync, writeFileSync, mkdirSync, existsSync, statSync } = require('fs')
+const { appendFileSync, readFileSync, writeFileSync, existsSync } = require('fs')
 const { execSync } = require('child_process')
 
-const sh = cmd => execSync(cmd).toString('utf8')
+const sh = (cmd) => execSync(cmd).toString('utf8')
 
 module.exports = () => {
   if (sh(`git rev-parse --git-dir`).trim() === '.git') {
@@ -13,9 +13,12 @@ module.exports = () => {
       console.error('issues folder already exists')
     } else {
       sh(`./scripts/git-new-workdir . issues && cd issues && git checkout --orphan issues && git reset --hard`)
-      writeFileSync('issues/config.json', JSON.stringify({
-        autoPush: true
-      }))
+      writeFileSync(
+        'issues/config.json',
+        JSON.stringify({
+          autoPush: true
+        })
+      )
       sh(`cd issues && git add config.json && git commit -m init && git push --set-upstream origin issues`)
       if (existsSync('.gitignore')) {
         const gitignore = readFileSync('.gitignore', 'utf8')
